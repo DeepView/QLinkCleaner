@@ -11,6 +11,10 @@ namespace QLinkCleaner
     {
         private const string DEFAULT_MANIFEST_PATH = @"manifest\actived.ql-manifest";
         private const string STATISTIC_FILE_PATH = @"statistic.ini";
+
+        public const string RUN_ARG_HIDE_IN_STARTUP = "--hide";                     // Argument to hide the form in startup
+        private string __run_arg = string.Empty;                                    // Stores the command line argument passed to the application
+        private int main_window_shown_count = 0;                                    // Counter for how many times the main window has been shown
         public string OpenedManifestPath { get; set; } = string.Empty;
         public FileSystemWatcher[] Monitors { get; set; }
         public bool IsMonitoring { get; set; } = false;
@@ -28,6 +32,17 @@ namespace QLinkCleaner
             WriteLog("App", "Application started.");
             WriteLog("Statistic", "Statistical record loading completed.");
         }
+
+        public MainForm(string[] args) : this()
+        {
+            string arg = args[0];
+            if (!string.IsNullOrWhiteSpace(arg))
+            {
+                __run_arg = arg;
+                WriteLog("App", $"Startup argument for the application: {__run_arg}");
+            }
+        }
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -546,6 +561,24 @@ namespace QLinkCleaner
         {
             StatisticForm statisticForm = new();
             statisticForm.ShowDialog(this, Statistic);
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            main_window_shown_count++;
+            if (main_window_shown_count == 1)
+            {
+                switch (__run_arg)
+                {
+                    case RUN_ARG_HIDE_IN_STARTUP:
+                        FormClosingEventArgs eventArgs = new(CloseReason.UserClosing, false);
+                        MainForm_FormClosing(sender, eventArgs);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            WriteLog("App", $"The main interface of the application has been loaded, and the loading statistics count is {main_window_shown_count}.");
         }
     }
 }

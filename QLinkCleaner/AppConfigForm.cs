@@ -73,6 +73,7 @@ namespace QLinkCleaner
                 // 创建快捷方式
                 var shortcut = (IWshRuntimeLibrary.WshShortcut)new IWshRuntimeLibrary.WshShell().CreateShortcut(shortcutPath);
                 shortcut.TargetPath = exePath;
+                shortcut.Arguments = MainForm.RUN_ARG_HIDE_IN_STARTUP; // 可以在这里添加启动参数，如果需要的话
                 shortcut.WorkingDirectory = Path.GetDirectoryName(exePath);
                 shortcut.Save();
             }

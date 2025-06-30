@@ -396,6 +396,7 @@
             Text = "QLink Cleaner";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
+            Shown += MainForm_Shown;
             menuStrip_MainMenu.ResumeLayout(false);
             menuStrip_MainMenu.PerformLayout();
             statusStrip1.ResumeLayout(false);

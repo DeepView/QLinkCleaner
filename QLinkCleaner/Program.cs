@@ -8,7 +8,7 @@ namespace QLinkCleaner
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             string appName = @"QLinkCleaner";
             using Mutex mutex = new(true, appName);
@@ -24,9 +24,10 @@ namespace QLinkCleaner
                 );
                 return;
             }
+            if (args.Length == 0 || args == null) args = [string.Empty];
             // If this is the first instance, continue with application startup
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(args));
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

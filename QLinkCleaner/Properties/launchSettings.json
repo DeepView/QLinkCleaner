@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "QLinkCleaner": {
+      "commandName": "Project",
+      "commandLineArgs": "--hide"
+    }
+  }
+}
